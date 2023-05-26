@@ -1,5 +1,5 @@
 import { selector } from "./keys"
-import render from "./cloud"
+import print from "./table"
 
 export default function toogle(value: boolean): void {
 
@@ -40,16 +40,13 @@ function select(event: Event): void {
     if (element.textContent.length < 256)
         return
 
-    const words = element.textContent.split(/\s+/g).filter(w => w.length > 0)
+    const words = element.textContent.toLocaleLowerCase()
+        .split(/\s+/g).filter(w => w.length > 0)
 
     const container = document.createElement("div")
 
     element.append(container)
-    
-    container.style.width = "100%"
-    container.style.minHeight = "32em"
-    container.style.position = "relative"
 
-    render(words, container)
+    container.innerHTML = print(words)
     toogle(false)
 }

@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Wordcloud",
+    "name": "Wordsummary",
     "version": "1.0",
-    "description": "Makes cloud of words (wordcloud) on a website after performing basic summary of them",
+    "description": "Makes summary of words on a website",
     "background": {
         "scripts": [
             "background.js"
@@ -19,7 +19,7 @@
         }
     ],
     "browser_action": {
-        "default_title": "Highlight",
+        "default_title": "Summarize",
         "default_icon": "icons/cloud-32.png"
     }
 }
