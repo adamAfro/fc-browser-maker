@@ -1,4 +1,5 @@
 import { selector } from "./keys"
+import render from "./cloud"
 
 export default function toogle(value: boolean): void {
 
@@ -27,26 +28,28 @@ function mark(event: Event): void {
     unmark()
 
     const element = event.target as Element
-    element.classList.add(selector)
+    if (element.textContent.length > 256)
+        element.classList.add(selector)
 }
 
 function select(event: Event): void {
     
+    unmark()
+
     const element = event.target as Element
-    const words = element.textContent.split(" ")
+    if (element.textContent.length < 256)
+        return
 
-    const counted = count(words)
+    const words = element.textContent.split(/\s+/g).filter(w => w.length > 0)
 
-    console.info([...counted.entries()].sort(( [w1, v1], [w2, v2] ) => v1 - v2))
-}
+    const container = document.createElement("div")
 
-function count(array: any[]) {
+    element.append(container)
+    
+    container.style.width = "100%"
+    container.style.minHeight = "32em"
+    container.style.position = "relative"
 
-    const counts: Map<any, number> = new Map()
-    array.forEach(element => counts.has(element) ? 
-        counts.set(element, counts.get(element) + 1) : 
-        counts.set(element, 1)
-    )
-
-    return counts
+    render(words, container)
+    toogle(false)
 }
