@@ -1,5 +1,5 @@
 import { selector } from "./keys"
-import print from "./table"
+import { default as print, hidding } from "./table"
 
 export default function toogle(value: boolean): void {
 
@@ -48,5 +48,7 @@ function select(event: Event): void {
     element.append(container)
 
     container.innerHTML = print(words)
+    hidding(container.querySelector("table"))
+
     toogle(false)
 }

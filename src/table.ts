@@ -1,3 +1,5 @@
+import { selector } from "./keys"
+
 export default function(words: string[]) {
 
     const ranking = rank(words)
@@ -11,19 +13,46 @@ export default function(words: string[]) {
         
         if (counted.length == 0) continue
 
-        html += `<tr><td>${i}</td><td style="text-align:center">${counted.map(([n, tag]) => tag).join("")}</td></tr>`
+        html += `<tr data-count=${i}>
+            <td>${i}</td>
+            <td style="text-align:center">${counted.map(([n, tag]) => tag).join("")}</td>
+        </tr>`
     }
 
-    html += `<tr><td></td><td style="text-align:left">
-        ${tags.filter(([n]) => n == 1).map(([n, tag]) => tag).join("")}
-    </td></tr>`
+    html += `<tr data-count=${1}>
+        <td style="vertical-align:top"><button>...</button></td>
+        <td style="text-align:left">
+            ${tags.filter(([n]) => n == 1).map(([n, tag]) => tag).join("")}
+        </td>
+    </tr>`
     
 
     return `<table>
         <tbody>${html}</tbody>
     </table>`
 }
- 
+
+export function hidding(table: HTMLTableElement) {
+
+    const row = table.querySelector(`[data-count="1"]`)
+    const button = row.querySelector(` button`)
+    const tags = Array.from(row.querySelectorAll("output"))
+
+    fold(tags)
+
+    button.addEventListener("click", event => fold(tags))
+}
+
+function fold(tags: HTMLElement[]) {
+
+    tags.slice(3).forEach(tag => {
+
+        tag.style.display == "none" ? 
+            tag.style.display = "inline-block" :
+            tag.style.display = "none"
+    })
+}
+  
 /** HTML that contains hidden elements that are rendered, so other function can displace them well */
 function render(word: string, n: number, max: number) {
     
