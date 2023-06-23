@@ -1,4 +1,4 @@
-import selection from "./select"
+import setSelectingMode from "./select"
 import CSS from "./styles"
 
 
@@ -12,12 +12,19 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
     if (request.action == "hover") {
 
-        selection(request.value)
+        setSelectingMode(request.value)
 
-        document.body.addEventListener("click", click => sendResponse({ action: "hover", desc: "clicked" }), { once: true })
+        const respond = (click: Event) => {
 
-        if (request.value)
-            return true
+            return sendResponse({ action: "hover", desc: "clicked" })
+
+            
+        }
+
+        document.body.addEventListener("click", respond, { once: true })
+
+
+        return request.value // to keep the connection open if true
     }
 })
 

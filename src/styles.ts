@@ -1,10 +1,23 @@
 import { selector } from "./keys"
+import { 
+    className as highlight, 
+    rankAttrName as highlightingAttr
+} from "./highlight"
 
 const Styles = {
 
     selected: {
         outline: `dashed`,
         cursor: `pointer`
+    },
+
+    [highlight]: {
+        backgroundColor: `yellow`,
+        borderRadius: `0.25em`
+    },
+
+    [highlightingAttr]: {
+        transition: `background-color 0.5s`
     }
 }
 
@@ -15,4 +28,8 @@ function CSSify(obj: any) {
         .join("\n")
 }
 
-export default `.${selector} { ${CSSify(Styles.selected)} }`
+export default `
+    .${selector} { ${CSSify(Styles.selected)} }
+    .${highlight} { ${CSSify(Styles[highlight])}}
+    [${highlightingAttr}] { ${CSSify(Styles[highlightingAttr])}}
+`

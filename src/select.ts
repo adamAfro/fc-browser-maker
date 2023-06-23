@@ -1,5 +1,7 @@
 import { selector } from "./keys"
-import { default as print, hidding } from "./table"
+import { default as renderTable, countAttrName as tableAttr } from "./table"
+import { prepare as prepareHighlight, highlight, unhighlight, canGlow } from './highlight'
+import { rank } from "./count"
 
 export default function toogle(value: boolean): void {
 
@@ -15,6 +17,8 @@ export default function toogle(value: boolean): void {
         document.body.removeEventListener("click", select)
     }
 }
+
+
 
 function unmark(): void {
 
@@ -32,6 +36,9 @@ function mark(event: Event): void {
         element.classList.add(selector)
 }
 
+
+
+
 function select(event: Event): void {
     
     unmark()
@@ -42,13 +49,18 @@ function select(event: Event): void {
 
     const words = element.textContent.toLocaleLowerCase()
         .split(/\s+/g).filter(w => w.length > 0)
+    const ranking = rank(words)
 
-    const container = document.createElement("div")
+    prepareHighlight(element, ranking)
+    function highlightEvent(event: Event) {
 
-    element.append(container)
-
-    container.innerHTML = print(words)
-    hidding(container.querySelector("table"))
+        unhighlight(element)
+        highlight(element, (event.target as Element).textContent)
+    }
+    
+    const tblContainer = renderTable(element, ranking)
+    for (const word of tblContainer.querySelectorAll(`[${tableAttr}]`)) 
+        word.addEventListener("click", highlightEvent)
 
     toogle(false)
 }
