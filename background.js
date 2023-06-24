@@ -1,7 +1,10 @@
-let hovering = false
-
-browser.browserAction.onClicked.addListener(function(tab) {
-
-    hovering = !hovering
-    browser.tabs.sendMessage(tab.id, { action: "hover", value: hovering }, response => hovering = false)
-})
+(() => {
+  // bundle/background.js
+  var selecting = false;
+  browser.browserAction.onClicked.addListener(function(tab) {
+    selecting = !selecting;
+    browser.tabs.sendMessage(tab.id, {
+      command: "select"
+    }, (response) => selecting = false);
+  });
+})();

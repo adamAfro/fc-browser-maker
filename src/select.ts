@@ -1,66 +1,50 @@
+import { canBeAnalised, analiseContent } from "./analise"
 import { selector } from "./keys"
-import { default as renderTable, countAttrName as tableAttr } from "./table"
-import { prepare as prepareHighlight, highlight, unhighlight, canGlow } from './highlight'
-import { rank } from "./count"
 
-export default function toogle(value: boolean): void {
+export const classNameHover = selector + "-hover"
+
+export function toogle(value: boolean): void {
 
     if (value) {
 
-        document.body.addEventListener("mousemove", mark)
-        document.body.addEventListener("click", select)
+        document.body.addEventListener("mousemove", hover)
+        document.body.addEventListener("click", unhover)
 
     } else {
 
-        unmark()
-        document.body.removeEventListener("mousemove", mark)
-        document.body.removeEventListener("click", select)
+        unhover()
+        document.body.removeEventListener("mousemove", hover)
+        document.body.removeEventListener("click", unhover)
     }
 }
 
 
 
-function unmark(): void {
 
-    const selected = document.getElementsByClassName(selector)
+function unhover(): void {
+
+    const selected = document.getElementsByClassName(classNameHover)
     Array.from(selected)
-        .forEach(({ classList }) => classList.remove(selector))
+        .forEach(({ classList }) => classList.remove(classNameHover))
 }
 
-function mark(event: Event): void {
+function hover(event: Event): void {
 
-    unmark()
+    unhover()
 
     const element = event.target as Element
-    if (element.textContent.length > 256)
-        element.classList.add(selector)
+    if (canBeAnalised(element))
+        element.classList.add(classNameHover)
 }
 
 
 
+export function select(element: Node | Element | EventTarget) {
 
-function select(event: Event): void {
-    
-    unmark()
+    if (!canBeAnalised(element))
+        return null
 
-    const element = event.target as Element
-    if (element.textContent.length < 256)
-        return
+    const ranking = analiseContent(element)
 
-    const words = element.textContent.toLocaleLowerCase()
-        .split(/\s+/g).filter(w => w.length > 0)
-    const ranking = rank(words)
-
-    prepareHighlight(element, ranking)
-    function highlightEvent(event: Event) {
-
-        unhighlight(element)
-        highlight(element, (event.target as Element).textContent)
-    }
-    
-    const tblContainer = renderTable(element, ranking)
-    for (const word of tblContainer.querySelectorAll(`[${tableAttr}]`)) 
-        word.addEventListener("click", highlightEvent)
-
-    toogle(false)
+    return ranking
 }

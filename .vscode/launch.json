@@ -2,13 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch WebExtension",
+            "name": "Firefox",
             "type": "firefox",
             "request": "launch",
             "addonPath": "${workspaceFolder}",
-            "file": "${workspaceFolder}/index.html",
+            "url": "${workspaceFolder}/debug.html",
+
             "reloadOnChange": {
-                "watch": [ "${workspaceFolder}/index.js", "${workspaceFolder}/background.js", "${workspaceFolder}/manifest.json" ]
+                "watch": [ 
+                    "${workspaceFolder}/content.js", 
+                    "${workspaceFolder}/background.js", 
+                    "${workspaceFolder}/manifest.json" 
+                ]
             }
         }
     ]

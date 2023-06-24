@@ -8,8 +8,13 @@
 - [x] highlighting summarised text after clicking summary
 - [ ] showing as popup
 
-## Build `src` into `index.js`
+---
 
-```
-tsc; esbuild bundle/index.js --outfile=index.js --bundle
-```
+I had some issues...
+
+Why not show something in:
+
+- browser popup - disappears after clicking on the page ❌
+- browser sidepanel - is not supported by some browsers ❌
+- window popup - another window?! ❌
+- website custom sidepanel... ✅

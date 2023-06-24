@@ -1,12 +1,15 @@
-import { selector } from "./keys"
 import { 
     className as highlight, 
     rankAttrName as highlightingAttr
 } from "./highlight"
 
+import { 
+    classNameHover as selectionHover 
+} from "./select"
+
 const Styles = {
 
-    selected: {
+    [selectionHover]: {
         outline: `dashed`,
         cursor: `pointer`
     },
@@ -29,7 +32,7 @@ function CSSify(obj: any) {
 }
 
 export default `
-    .${selector} { ${CSSify(Styles.selected)} }
+    .${selectionHover} { ${CSSify(Styles[selectionHover])} }
     .${highlight} { ${CSSify(Styles[highlight])}}
     [${highlightingAttr}] { ${CSSify(Styles[highlightingAttr])}}
 `
