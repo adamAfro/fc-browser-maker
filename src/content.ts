@@ -8,19 +8,19 @@ browser.runtime
 
 
 
-import CSS from "./styles"
-import { toogle as setSelectingMode, select } from "./select"
+import CSS from "./components/styles"
+import { toogle as setSelectingMode, select } from "./components/select"
 
 import { 
     prepare as prepareHighlight, 
     highlight, unhighlight 
-} from "./highlight"
+} from "./components/highlight"
 
 import { 
     default as renderTable, 
     countAttrName as tableAttr, 
     tableClassName
-} from "./table"
+} from "./components/table"
 
 function handleMessage(message, sender, sendResponse) {
 
