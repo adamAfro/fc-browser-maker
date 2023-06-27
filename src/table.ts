@@ -2,7 +2,7 @@ import { selector } from "./keys"
 
 export const countAttrName = "data-" + selector + "-count"
 export const tableCountAttrName = "data-" + selector + "-tier"
-
+export const tableClassName = selector + "-table"
 
 
 export default function render(element: Element, ranking: [string, number][]) {
@@ -30,7 +30,7 @@ function print(ranking: [string, number][]) {
         if (counted.length == 0) continue
 
         html += `<tr ${tableCountAttrName}=${i}>
-            <td>${i}</td>
+            <td><output>${i}</output></td>
             <td style="text-align:center">${counted.map(([n, tag]) => tag).join("")}</td>
         </tr>`
     }
@@ -43,7 +43,7 @@ function print(ranking: [string, number][]) {
     </tr>`
     
 
-    return `<table>
+    return `<table class="${tableClassName}">
         <tbody>${html}</tbody>
     </table>`
 }

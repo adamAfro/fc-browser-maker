@@ -3,11 +3,26 @@ import {
     rankAttrName as highlightingAttr
 } from "./highlight"
 
+import {
+    tableClassName as table
+} from "./table"
+
 import { 
     classNameHover as selectionHover 
 } from "./select"
 
 const Styles = {
+
+    [table]: {
+        position: `fixed`,
+        bottom: `0`,
+        zIndex: `1000`,
+    },
+
+    [table + ' output']: {
+        backgroundColor: `white`,
+        cursor: `pointer`
+    },
 
     [selectionHover]: {
         outline: `dashed`,
@@ -31,8 +46,8 @@ function CSSify(obj: any) {
         .join("\n")
 }
 
-export default `
-    .${selectionHover} { ${CSSify(Styles[selectionHover])} }
-    .${highlight} { ${CSSify(Styles[highlight])}}
-    [${highlightingAttr}] { ${CSSify(Styles[highlightingAttr])}}
-`
+const classesCSS = [table, selectionHover, highlight, table + ' output']
+    .map(name => `.${name} {${CSSify(Styles[name])}}`).join('\n')
+const attributesCSS = `[${highlightingAttr}] { ${CSSify(Styles[highlightingAttr])}}`
+
+export default [classesCSS, attributesCSS].join('\n')
