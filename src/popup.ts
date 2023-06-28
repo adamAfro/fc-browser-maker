@@ -9,14 +9,9 @@ const resetButton = popup.querySelector('button[data-command="reset"]')
 resetButton.addEventListener('click', handleReset)
 
 
-/**
- * @TODO reset popup to menu after lost focus -
- * for some reason unload and blur did't work as I wanted...
- */
 
 
-
-function handleURLChange(event: Event) {
+async function handleURLChange(event: Event) {
     
     const url = (event.target as HTMLElement).dataset.url
 
@@ -24,6 +19,8 @@ function handleURLChange(event: Event) {
 
     browser.browserAction.setPopup({ popup: url })
     browser.browserAction.openPopup() // setPopup is not enough
+
+    browser.runtime.sendMessage({ command: "menu" })
 }
 
 

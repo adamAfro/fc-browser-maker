@@ -25,10 +25,16 @@ async function handleMessage(message, sender, sendResponse) {
 
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
 
-    browser.tabs.sendMessage(tab.id, { 
-        command: "clear" 
-    }, (response) => {
+    if (message.command == "menu") 
+        return browser.browserAction.setPopup({ popup: 'menu.html' })
 
-        browser.browserAction.setPopup({ popup: '' })
-    })
+    if (message.command == "reset") {
+
+        browser.tabs.sendMessage(tab.id, { 
+            command: "clear" 
+        }, (response) => {
+
+            browser.browserAction.setPopup({ popup: '' })
+        })
+    }
 }
