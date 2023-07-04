@@ -1,40 +1,41 @@
-declare const browser: any
-
-browser.browserAction
-    .onClicked.addListener(toogleTabSelection)
-
-browser.runtime
-    .onMessage.addListener(handleMessage)
+import { 
+    setWidgetAction, setPopup, removePopup,
+    receive, sendToActiveTab 
+} from "./components/browser"
 
 
-let selecting = false
-function toogleTabSelection(tab) {
+setWidgetAction(async (tab) => {
 
-    selecting = true
-    browser.tabs.sendMessage(tab.id, { 
-        command: "select" 
-    }, (response) => {
+    await sendToActiveTab({ command: "select" })
+    
+    setPopup('menu.html')
+})
 
-        selecting = false
 
-        browser.browserAction.setPopup({ popup: 'menu.html' })
-    })
-}
 
-async function handleMessage(message, sender, sendResponse) {
+receive(async (message, sender, sendResponse) => { 
 
-    const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
+    if (message.command == "debug") 
+        console.debug(message)
+
+    if (message.pass) {
+
+        delete message.pass
+
+        return sendToActiveTab(message)
+    }
 
     if (message.command == "menu") 
-        return browser.browserAction.setPopup({ popup: 'menu.html' })
+        return setPopup('menu.html')
 
     if (message.command == "reset") {
 
-        browser.tabs.sendMessage(tab.id, { 
-            command: "clear" 
-        }, (response) => {
-
-            browser.browserAction.setPopup({ popup: '' })
-        })
+        await sendToActiveTab({ command: "clear" })
+        
+        removePopup()
     }
-}
+})
+
+
+
+export default null // ts workaround

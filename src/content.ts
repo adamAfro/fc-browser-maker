@@ -1,31 +1,44 @@
-declare const browser: any
-
-
-document.head.insertAdjacentHTML("beforeend", `<style>${CSS}</style>`)
-
-browser.runtime
-    .onMessage.addListener(handleMessage)
-
-
+import { toogle as setSelectingMode, select } from "./components/select"
+import { prepare as prepareHighlight } from "./components/highlight"
+import { highlight, unhighlight } from "./components/highlight"
+import { default as table, countAttrName as tblAttr } from "./components/table"
+import { tableClassName } from "./components/table"
+import { receive, save } from "./components/browser"
 
 import CSS from "./components/styles"
-import { toogle as setSelectingMode, select } from "./components/select"
 
-import { 
-    prepare as prepareHighlight, 
-    highlight, unhighlight 
-} from "./components/highlight"
 
-import { 
-    default as renderTable, 
-    countAttrName as tableAttr, 
-    tableClassName
-} from "./components/table"
+const styleTag = `<style>${CSS}</style>`
+document.head.insertAdjacentHTML("beforeend", styleTag)
 
-function handleMessage(message, sender, sendResponse) {
+
+
+receive((message, sender, sendResponse) => {
 
     if (message.command == "clear")
         return clearOutput()
+
+    if (message.command == "translate") {
+
+        const translations = message.data as [string, string][]
+
+        const selection = document
+            .querySelectorAll(`.${tableClassName} output`)
+
+        for (const element of selection as NodeListOf <HTMLOutputElement>) {
+            
+            const word = element.value.trim().toLowerCase()
+            const index = translations.findIndex(([w]) => w.toLowerCase() == word)
+        
+            if (index < 0)
+                continue
+
+            const style = `position:absolute; bottom:${-element.offsetHeight/3}px; left:0;`
+            element.insertAdjacentHTML("afterend", `<output style="${style}">${translations[index][1]}</output>`)
+        }
+
+        return false
+    }
 
     if (message.command == "select") {
 
@@ -36,10 +49,11 @@ function handleMessage(message, sender, sendResponse) {
         
         return true // to keep the bg-script waiting for response
     }
-}
+})
 
 
-function render(event: Event, sendResponse: (response: any) => void) {
+
+async function render(event: Event, sendResponse: (response: any) => void) {
 
     const container = event.target as Element
 
@@ -57,15 +71,22 @@ function render(event: Event, sendResponse: (response: any) => void) {
     
     clearOutput()
     
-    const tblContainer = renderTable(container, ranking)
-    for (const word of tblContainer.querySelectorAll(`[${tableAttr}]`)) 
+    const tblContainer = table(container, ranking)
+    for (const word of tblContainer.querySelectorAll(`[${tblAttr}]`)) 
         word.addEventListener("click", highlightEvent)
 
-    sendResponse({ command: "select", result: ranking })
+    await save('ranking', ranking)
+
+    sendResponse(true)
 }
+
+
 
 function clearOutput() {
 
     document.querySelectorAll(`.${tableClassName}`)
         .forEach(e => e.remove())
 }
+
+
+export default null // ts workaround

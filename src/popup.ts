@@ -1,30 +1,24 @@
-const popupContext = window
-const popup = document
-let isMenu = true
-
-const translateButton = popup.querySelector(`button[data-command="goto"]`)
-translateButton.addEventListener('click', handleURLChange)
-
-const resetButton = popup.querySelector('button[data-command="reset"]')
-resetButton.addEventListener('click', handleReset)
+import { openPopup, sendToBackground } from "./components/browser"
 
 
-
-
-async function handleURLChange(event: Event) {
+const translateButton = document
+    .querySelector(`button[data-command="goto"]`)
+translateButton.addEventListener('click', (event: Event) => {
     
     const url = (event.target as HTMLElement).dataset.url
 
-    isMenu = (url != 'menu.html')
+    openPopup(url)
 
-    browser.browserAction.setPopup({ popup: url })
-    browser.browserAction.openPopup() // setPopup is not enough
-
-    browser.runtime.sendMessage({ command: "menu" })
-}
+    sendToBackground({ command: "menu" })
+})
 
 
-function handleReset() {
+const resetButton = document
+    .querySelector('button[data-command="reset"]')
+resetButton.addEventListener('click', () => {
 
-    browser.runtime.sendMessage({ command: "reset" })
-}
+    sendToBackground({ command: "reset" })
+})
+
+
+export default null // ts workaround

@@ -75,7 +75,9 @@ function fold(tags: HTMLElement[]) {
   
 function printWord(word: string, n: number, max: number) {
     
-    return `<output ${countAttrName}="${n}"
-        style="font-size:${n/max + 0.75}em;border:solid thin;border-radius:.25em;margin:.1em .5em;display:inline-block;padding:.2em">${word}
-    </output>`.replaceAll(/\s+/g, " ")
+    const style = `font-size:${n/max + 0.75}em;border:solid thin;border-radius:.25em;margin:.1em .5em;display:inline-block;padding:.2em;`
+
+    return `<span style="position:relative">
+        <output ${countAttrName}="${n}"style="${style}">${word}</output>
+    </span>`.replaceAll(/\s+/g, " ")
 }

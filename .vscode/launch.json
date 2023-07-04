@@ -6,6 +6,7 @@
             "type": "firefox",
             "request": "launch",
             "addonPath": "${workspaceFolder}",
+            "reAttach": true,
             "url": "${workspaceFolder}/debug.html",
 
             "reloadOnChange": {
