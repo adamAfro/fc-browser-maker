@@ -1,0 +1,24 @@
+.table {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.table output {
+    background-color: white;
+    cursor: pointer;
+}
+
+.selectionHover {
+    outline: dashed;
+    cursor: pointer;
+}
+
+.highlight {
+    background-color: yellow;
+    border-radius: 0.25em;
+}
+
+[highlightingAttr] {
+    transition: background-color 0.5s;
+}
