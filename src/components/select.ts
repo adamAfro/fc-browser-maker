@@ -39,7 +39,7 @@ function hover(event: Event): void {
 
 
 
-export function select(element: Node | Element | EventTarget) {
+export function select(element: Node | Element) {
 
     if (!canBeAnalised(element))
         return null

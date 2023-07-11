@@ -19,15 +19,16 @@ export function rank(words: string[]): [any, number][] {
 }
 
 
-export function canBeAnalised(element) {
+export function canBeAnalised(element: Node | Element) {
 
     return element.textContent.length > 256 &&
         element instanceof Element
 }
 
-export function analiseContent(element) {
+export function analiseContent(element: Node | Element) {
 
-    const words = element.textContent.toLocaleLowerCase()
+    const words = element.textContent
+        .replaceAll(/[.,\/#!$%\^&\*;:{}=\-_`~()\[\]\d?]/g, ' ')
         .split(/\s+/g).filter(w => w.length > 0)
     const ranking = rank(words) as [string, number][]
     

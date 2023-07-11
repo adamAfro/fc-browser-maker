@@ -30,14 +30,14 @@ receive((message, sender, sendResponse) => {
             const word = element.value.trim().toLowerCase()
             const index = translations.findIndex(([w]) => w.toLowerCase() == word)
         
-            if (index < 0)
+            if (index < 0 || !translations[index][1])
                 continue
 
             const style = `position:absolute; bottom:${-element.offsetHeight/3}px; left:0;`
             element.insertAdjacentHTML("afterend", `<output style="${style}">${translations[index][1]}</output>`)
         }
 
-        return false
+        return
     }
 
     if (message.command == "select") {
@@ -57,7 +57,7 @@ async function render(event: Event, sendResponse: (response: any) => void) {
 
     const container = event.target as Element
 
-    const ranking = select(event.target)
+    const ranking = select(container)
     setSelectingMode(false)
 
     prepareHighlight(container, ranking)

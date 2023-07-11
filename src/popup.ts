@@ -1,4 +1,4 @@
-import { openPopup, sendToBackground } from "./components/browser"
+import { load, openPopup, sendToBackground } from "./components/browser"
 
 
 const translateButton = document
@@ -18,6 +18,22 @@ const resetButton = document
 resetButton.addEventListener('click', () => {
 
     sendToBackground({ command: "reset" })
+})
+
+
+
+
+const copyButton = document
+    .querySelector('button[data-command="copy"]')
+copyButton.addEventListener('click', async () => {
+
+    const translations = await load('translations')
+    const separator = ','
+    const clip = translations
+        .map(([word, tr]) => word + separator + tr)
+        .join('\n')
+
+    await navigator.clipboard.writeText(clip)
 })
 
 

@@ -3,7 +3,7 @@
     "name": "Wordsummary",
     "version": "1.0",
     "description": "Makes summary of words on a website",
-    "permissions": ["activeTab", "storage"],
+    "permissions": ["activeTab", "storage", "clipboard-write"],
 
     "background": {
         "scripts": [

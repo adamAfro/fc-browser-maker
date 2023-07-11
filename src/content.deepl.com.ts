@@ -31,7 +31,7 @@ const changeCheck = setInterval(async () => {
     
     new Promise(resolve => setTimeout(resolve, 300))
 
-    sendToBackground({ pass: true, command: 'translate', data: getContent() })
+    sendToBackground({ pass: true, command: 'translate', data: await getContent() })
 
     window.close()
     // https://discourse.mozilla.org/t/can-an-extension-close-its-own-popup-opened-by-a-browseraction-or-pageaction/38645
@@ -52,7 +52,7 @@ const changeCheck = setInterval(async () => {
 
 
 
-function getContent() {
+async function getContent() {
 
     const containers = [
         document.querySelector('.lmt__source_textarea') as HTMLElement,
@@ -62,7 +62,10 @@ function getContent() {
     const contents = containers.map(container => container.innerText.split('\n'))
         .map(content => content.map(w => w.trim()).filter(w => w.length > 0))
 
-    return zip(contents)
+    const translations = zip(contents)
+    await save('translations', translations)
+
+    return translations
 }
 
 

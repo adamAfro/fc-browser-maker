@@ -10,7 +10,7 @@ export default function render(element: Element, ranking: [string, number][]) {
     const container = document.createElement("div")
     element.append(container)
     container.innerHTML = print(ranking)
-    hiddingSingles(container.querySelector("table"))
+    //hiddingSingles(container.querySelector("table"))
 
     return container
 }
@@ -23,7 +23,7 @@ function print(ranking: [string, number][]) {
     const tags = ranking.map(([word, n]) => [n, printWord(word, n, max)])
 
     let html = ""
-    for (let i = max; i >= 2; i--) {
+    for (let i = max; i >= 1; i--) {
 
         const counted = tags.filter(([n]) => n == i)
         
@@ -34,13 +34,6 @@ function print(ranking: [string, number][]) {
             <td style="text-align:center">${counted.map(([n, tag]) => tag).join("")}</td>
         </tr>`
     }
-
-    html += `<tr ${tableCountAttrName}=${1}>
-        <td style="vertical-align:top"><button>...</button></td>
-        <td style="text-align:left">
-            ${tags.filter(([n]) => n == 1).map(([n, tag]) => tag).join("")}
-        </td>
-    </tr>`
     
 
     return `<table class="${tableClassName}">
@@ -49,29 +42,6 @@ function print(ranking: [string, number][]) {
 }
 
 
-
-function hiddingSingles(table: HTMLTableElement) {
-
-    const row = table.querySelector(`[${tableCountAttrName}="1"]`)
-    const button = row.querySelector(` button`)
-    const tags = Array.from(row.querySelectorAll("output"))
-
-    fold(tags)
-
-    button.addEventListener("click", event => fold(tags))
-}
-
-
-
-function fold(tags: HTMLElement[]) {
-
-    tags.slice(3).forEach(tag => {
-
-        tag.style.display == "none" ? 
-            tag.style.display = "inline-block" :
-            tag.style.display = "none"
-    })
-}
   
 function printWord(word: string, n: number, max: number) {
     
