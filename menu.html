@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .hidden { display: none;}
+        </style>
     </head>
     <body>
         
@@ -13,7 +16,7 @@
                     🔤 translate
                 </button>
             </li>
-            <li><button data-command="copy">📝 copy</button></li>
+            <li class="hidden"><button data-command="copy">📝 copy</button></li>
             <li><button data-command="reset">❌ reset</button></li>
         </ul>
         <script src="popup.js"></script>

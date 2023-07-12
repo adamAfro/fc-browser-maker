@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Scan</title>
+        <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    </head>
+
+    <body>
+
+        <div id="reader"></div>
+
+        <ol id="container">
+
+        </ol>
+
+        <script>
+
+            const container = document.getElementById('container')
+            const indices = []
+            let total = NaN
+            
+            function onScanSuccess(decodedText, decodedResult) {
+                
+                let output = JSON.parse(decode(decodedText))
+
+                if (!output.total || output.index === undefined) {
+
+                    const html = `<li>${JSON.stringify(output.data ? 
+                        output.data : 
+                        output)
+                    }</li>`
+                    
+                    container.insertAdjacentHTML('beforeend', html)
+                    
+                }
+
+                if (output.total)
+                    total = output.total
+
+                const hasBeenRead = indices.includes(output.index)
+                if (hasBeenRead) 
+                    return
+
+                indices.push(output.index)
+                
+                const html = `<li><code>${output.index}${total}</code>${JSON.stringify(output.data ? 
+                    output.data : 
+                    output)
+                }</li>`
+
+                container.insertAdjacentHTML('beforeend', html)
+            }
+
+            const html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader", {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 },
+                    formatsToSupport: [
+                        Html5QrcodeSupportedFormats.DATA_MATRIX
+                    ]
+                },
+            /* verbose= */ false);
+
+            html5QrcodeScanner.render(onScanSuccess);
+
+        </script>
+
+    </body>
+
+</html>

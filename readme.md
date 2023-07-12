@@ -16,3 +16,8 @@ after each change to files:
 ```
 deno run -A --watch=./src bundle.js
 ```
+
+
+## Deps
+
+- datalog/[datamatrix-svg](https://github.com/datalog/datamatrix-svg) under MIT
