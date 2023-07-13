@@ -4,10 +4,9 @@ under MIT.
 
 ## Testing
 
-For testing codes, serve `test.html` to a phone over https, because
-[html5-qrcode](https://github.com/mebjas/html5-qrcode) needs 
-https:// or localhost, but you cannot host locally from 
-desktop as a phone...
+For testing codes, serve `docs/scan/index.html` to a phone over https, 
+because [html5-qrcode](https://github.com/mebjas/html5-qrcode) needs 
+https:// or localhost, but you cannot host locally from desktop as a phone...
 
 ### HTTPS
 
