@@ -6,6 +6,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Scan</title>
         <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+        
+        <style>
+            body { margin: 0; border: 0; padding: 0;}
+            #container {
+                
+                position: absolute;
+                bottom: 0;
+                height: 12em;
+                overflow-y: scroll;
+                background-color: black;
+                color: white;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        </style>
     </head>
 
     <body>
@@ -23,8 +38,8 @@
             let total = NaN
             
             function onScanSuccess(decodedText, decodedResult) {
-                
-                let output = JSON.parse(decode(decodedText))
+
+                let output = JSON.parse(decodedText)
 
                 if (!output.total || output.index === undefined) {
 
@@ -34,7 +49,7 @@
                     }</li>`
                     
                     container.insertAdjacentHTML('beforeend', html)
-                    
+
                 }
 
                 if (output.total)
@@ -46,22 +61,18 @@
 
                 indices.push(output.index)
                 
-                const html = `<li><code>${output.index}${total}</code>${JSON.stringify(output.data ? 
-                    output.data : 
-                    output)
+                const html = `<li><code>${output.index}/${total}</code><br>${output.data ? 
+                    output.data.replaceAll('\n', '<br>') : output
                 }</li>`
 
                 container.insertAdjacentHTML('beforeend', html)
+
+                container.scrollTop = container
+                    .querySelector('li:last-child').offsetTop
             }
 
             const html5QrcodeScanner = new Html5QrcodeScanner(
-                "reader", {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 },
-                    formatsToSupport: [
-                        Html5QrcodeSupportedFormats.DATA_MATRIX
-                    ]
-                },
+                "reader", { fps: 10, qrbox: { width: 250, height: 250 } },
             /* verbose= */ false);
 
             html5QrcodeScanner.render(onScanSuccess);

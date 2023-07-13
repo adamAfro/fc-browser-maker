@@ -1,4 +1,4 @@
-import { load, openPopup, sendToBackground } from "./components/browser"
+import { load, openPopup, save, sendToBackground } from "./components/browser"
 
 document
     .querySelector(`button[data-command="goto"]`)
@@ -66,8 +66,18 @@ async function showDataMatrix() {
 
     const translations = (await load('translations')) as [string, string][]
     const scanAnimation = AnimateArrayData(translations)
+    const fpsInput = scanAnimation.querySelector('input[type="range"]') as HTMLInputElement
+    
+    fpsInput.addEventListener('input', saveFpsValue)
 
     document.body.append(scanAnimation)
+}
+
+async function saveFpsValue(event: Event) {
+
+    const fpsInput = event.target as HTMLInputElement
+    
+    await save('qrfps', fpsInput.value)
 }
 
 

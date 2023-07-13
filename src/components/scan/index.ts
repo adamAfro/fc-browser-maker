@@ -1,14 +1,14 @@
-import makeDataMatrix from "./datamatrix"
-
+import makeQRCode from "./qrcode"
+import { load } from "../browser"
 
 /** Make animation of scannable SVG immages of data */
 export function AnimateArrayData(data: any[]) {
 
-    const chunks = chunkArray(data)
+    const chunks = chunkCSVArray(data)
     const matrices = [] as SVGElement[]
     for (const chunk of chunks) {
 
-        const matrix = makeDataMatrix(JSON.stringify(chunk))
+        const matrix = makeQRCode(JSON.stringify(chunk))
 
         matrix.style.display = "none"
         
@@ -21,7 +21,7 @@ export function AnimateArrayData(data: any[]) {
     const container = document.createElement('div')
     container.append(...matrices)
 
-    const { fpsInput } = setAnimationConrollers(matrices)
+    const { fpsInput } = setAnimationConrollers()
     container.append(fpsInput)
 
     startMatricesAnimation(matrices, fpsInput)
@@ -29,15 +29,7 @@ export function AnimateArrayData(data: any[]) {
     return container
 }
 
-function setAnimationConrollers(matrices: SVGElement[]) {
-
-    for (let i = 0; i < matrices.length; i++) {
-    
-        const fpsInput = document.createElement('input')
-        
-        fpsInput.type = "radio"
-        fpsInput.value = i.toString()
-    }
+function setAnimationConrollers() {
 
     const fpsInput = document.createElement('input')
     
@@ -45,6 +37,9 @@ function setAnimationConrollers(matrices: SVGElement[]) {
     fpsInput.value = "500"
     fpsInput.min = "100"
     fpsInput.max = "1000"
+
+    load('qrfps')
+        .then(value => { if (value) fpsInput.value = value })
 
     return { fpsInput }
 }
@@ -66,23 +61,23 @@ function startMatricesAnimation(matrices: SVGElement[], fpsInput) {
     setTimeout(changeFrame, parseInt(fpsInput.value))
 }
 
-function chunkArray(data: any[], chunkMaxLength = 256) {
+function chunkCSVArray(data: any[], chunkMaxLength = 256) {
 
-    const chunks = [{data: "", index: 0, total: NaN}]
+    const chunks = [{data: data[0].join(','), index: 0, total: NaN}]
     chunkMaxLength -= JSON.stringify(chunks[0]).length
-    for (let i = 0, j = 0; i < data.length; i++) {
+    for (let i = 1, j = 0; i < data.length; i++) {
 
-        const suffix = JSON.stringify(data[i])
-        if (suffix.length > chunkMaxLength)
-            throw new Error(`Chunk length ${suffix.length} exceeds maximum ${chunkMaxLength}`)
+        const csvRow = data[i].join(',')
+        if (csvRow.length > chunkMaxLength)
+            throw new Error(`Chunk length ${csvRow.length} exceeds maximum ${chunkMaxLength}`)
 
-        if (chunks[j].data.length + suffix.length <= chunkMaxLength) 
-            chunks[j].data += suffix
+        if (chunks[j].data.length + csvRow.length <= chunkMaxLength) 
+            chunks[j].data += '\n' + csvRow
         else {
             
             j++
 
-            chunks.push({data: suffix, index: j, total: NaN})
+            chunks.push({data: csvRow, index: j, total: NaN})
         }
     }
 
