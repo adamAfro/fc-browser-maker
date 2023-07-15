@@ -6,20 +6,64 @@
         <style>
             .hidden { display: none;}
             input { display: block;}
+
+            body {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+
+            .ranking {
+    
+                display: block;
+                background-color: #ffffffb2;
+                width: 100vw;
+            }
+
+            .ranking tbody {
+
+                display: block;
+                columns: 100vw 32em;
+                overflow-x: auto;
+            }
+
+            .ranking tr { display: inline; }
+
+            .ranking td { display: inline; }
+
+            .ranking .word {
+                
+                background-color: white;
+                cursor: pointer;
+
+                display:inline-block;
+                border:solid thin;
+                border-radius:.25em;
+                margin:.1em .5em;
+                padding:.2em;
+            }
+
+            .ranking .translation {}
+
+            .qr {
+                width: 256px;
+                height: 256px;
+            }
         </style>
     </head>
     <body>
         
-        <h1>Wordsum</h1>
-        <ul>
-            <li>
-                <button data-command="goto" data-url="https://www.deepl.com/translator">
-                    🔤 translate
-                </button>
-            </li>
-            <li class="hidden"><button data-command="copy">📝 copy</button></li>
-            <li><button data-command="reset">❌ reset</button></li>
-        </ul>
-        <script src="popup.js"></script>
+        <main>
+            <h1>Wordsum</h1>
+            <ul>
+                <li>
+                    <button data-command="goto" data-url="https://www.deepl.com/translator">
+                        🔤 translate
+                    </button>
+                </li>
+                <li class="hidden"><button data-command="copy">📝 copy</button></li>
+            </ul>
+            <div class="qr"></div>
+        </main>
+        <script src="menu.js"></script>
     </body>
 </html>

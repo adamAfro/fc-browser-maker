@@ -1,26 +1,9 @@
-import { load, save, sendToBackground } from "./components/browser"
-
-(async function hashWordsIn() {
-
-    const ranking = await load("ranking")
-    const wordTrack = ranking.map(([word]) => word).join('%0A')
-
-    const languageHash = '//' // it is resolved as automatic
-    window.location.hash = languageHash + wordTrack
-
-})()
-
-
 const outputContainer = document
     .querySelector(".lmt__target_textarea") as HTMLElement
 
-// doesn't work
-/*new MutationObserver(mutations => {
 
-    sendToBackground({ pass: true, command: 'debug', data: getContent() })
 
-}).observe(outputContainer, { characterData: true })*/
-
+import { sendToBackground } from "./components/browser"
 
 const changeCheck = setInterval(async () => {
     
@@ -31,7 +14,10 @@ const changeCheck = setInterval(async () => {
     
     new Promise(resolve => setTimeout(resolve, 300))
 
-    sendToBackground({ pass: true, command: 'translate', data: await getContent() })
+    sendToBackground({ 
+        command: 'take', title: 'translations', 
+        data: await getContent() 
+    })
 
     window.close()
     // https://discourse.mozilla.org/t/can-an-extension-close-its-own-popup-opened-by-a-browseraction-or-pageaction/38645
@@ -49,9 +35,6 @@ const changeCheck = setInterval(async () => {
 
 
 
-
-
-
 async function getContent() {
 
     const containers = [
@@ -63,10 +46,10 @@ async function getContent() {
         .map(content => content.map(w => w.trim()).filter(w => w.length > 0))
 
     const translations = zip(contents)
-    await save('translations', translations)
 
     return translations
 }
+
 
 
 function zip(arrays) {

@@ -1,91 +1,63 @@
-import { toogle as setSelectingMode, select } from "./components/select"
-import { prepare as prepareHighlight } from "./components/highlight"
-import { highlight, unhighlight } from "./components/highlight"
-import { default as table, countAttrName as tblAttr } from "./components/table"
-import { tableClassName } from "./components/table"
-import { receive, save } from "./components/browser"
-
 import CSS from "./components/styles"
-
 
 const styleTag = `<style>${CSS}</style>`
 document.head.insertAdjacentHTML("beforeend", styleTag)
 
 
 
-receive((message, sender, sendResponse) => {
+import { receive } from "./components/browser"
 
-    if (message.command == "clear")
-        return clearOutput()
+receive(message => {
 
-    if (message.command == "translate") {
+    if (message.command == "select") 
+        handleSelecting()
 
-        const translations = message.data as [string, string][]
-
-        const selection = document
-            .querySelectorAll(`.${tableClassName} output`)
-
-        for (const element of selection as NodeListOf <HTMLOutputElement>) {
-            
-            const word = element.value.trim().toLowerCase()
-            const index = translations.findIndex(([w]) => w.toLowerCase() == word)
-        
-            if (index < 0 || !translations[index][1])
-                continue
-
-            const style = `position:absolute; bottom:${-element.offsetHeight/3}px; left:0;`
-            element.insertAdjacentHTML("afterend", `<output style="${style}">${translations[index][1]}</output>`)
-        }
-
-        return
-    }
-
-    if (message.command == "select") {
-
-        setSelectingMode(true)
-        const respond = (event: Event) => render(event, sendResponse)
-        document.body
-            .addEventListener("click", respond, { once: true })
-        
-        return true // to keep the bg-script waiting for response
-    }
+    if (message.command == "highlight")
+        handleHighlight(message.data) 
 })
 
 
 
-async function render(event: Event, sendResponse: (response: any) => void) {
+import { toogle as setSelectingMode } from "./components/select"
 
-    const container = event.target as Element
+function handleSelecting() {
+
+    setSelectingMode(true)
+    document.body
+        .addEventListener("click", handleSelection, { once: true })
+    
+    return true // to keep the bg-script waiting for response
+}
+
+
+
+import { sendToBackground } from "./components/browser"
+import { select } from "./components/select"
+
+let container: Element | null = null
+function handleSelection(event: Event) {
+
+    container = event.target as Element
 
     const ranking = select(container)
     setSelectingMode(false)
 
     prepareHighlight(container, ranking)
-    function highlightEvent(event: Event) {
-
-        unhighlight(container)
-        
-        const element = event.target as Element
-        highlight(container, element.textContent)
-    }
     
-    clearOutput()
-    
-    const tblContainer = table(container, ranking)
-    for (const word of tblContainer.querySelectorAll(`[${tblAttr}]`)) 
-        word.addEventListener("click", highlightEvent)
-
-    await save('ranking', ranking)
-
-    sendResponse(true)
+    return sendToBackground({ 
+        command: 'take',
+        title: 'ranking',
+        data: ranking
+    })
 }
 
+import { prepare as prepareHighlight } from "./components/highlight"
+import { highlight, unhighlight } from "./components/highlight"
 
+function handleHighlight(word: string) {
 
-function clearOutput() {
-
-    document.querySelectorAll(`.${tableClassName}`)
-        .forEach(e => e.remove())
+    unhighlight(container)
+    highlight(container, word)
 }
 
 

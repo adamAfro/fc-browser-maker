@@ -1,32 +1,3 @@
-.table {
-    
-    position: fixed;
-    bottom: 0;
-    z-index: 1000;
-
-    display: block;
-
-    background-color: #ffffffb2;
-}
-
-.table tbody {
-
-    display: block;
-    columns: 100vw auto;
-    max-height: 33vh;
-    overflow-x: auto;
-}
-
-.table tr { display: inline; }
-
-.table td { display: inline; }
-
-.table output {
-    
-    background-color: white;
-    cursor: pointer;
-}
-
 .selectionHover {
     outline: dashed;
     cursor: pointer;

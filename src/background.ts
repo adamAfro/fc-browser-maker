@@ -1,22 +1,16 @@
-import { 
-    setWidgetAction, setPopup, removePopup,
-    receive, sendToActiveTab 
-} from "./components/browser"
+import { reactToTabs, setWidgetAction, removePopup } 
+    from "./components/browser"
 
+setWidgetAction(tab => sendToActiveTab({ command: 'select' }))
 
-setWidgetAction(async (tab) => {
-
-    await sendToActiveTab({ command: "select" })
-    
-    setPopup('menu.html')
-})
+reactToTabs(removePopup)
 
 
 
-receive(async (message, sender, sendResponse) => { 
+import { receive, Message, setPopup } 
+    from "./components/browser"
 
-    if (message.command == "debug") 
-        console.debug(message)
+receive(async (message: Message) => { 
 
     if (message.pass) {
 
@@ -25,16 +19,51 @@ receive(async (message, sender, sendResponse) => {
         return sendToActiveTab(message)
     }
 
-    if (message.command == "menu") 
-        return setPopup('menu.html')
+    if (message.command == 'take')
+        return takeData(message.title, message.data)
 
-    if (message.command == "reset") {
+    if (message.command == 'popup')
+        return setPopup(message.data)
 
-        await sendToActiveTab({ command: "clear" })
-        
-        removePopup()
-    }
+    return console.debug(message)
 })
+
+
+import { getActiveTab,  } from './components/browser'
+import { saveRanking, saveTranslations } 
+    from "./components/storage"
+
+async function takeData(title: string, data: any) {
+
+    if (title == 'ranking') {
+        
+        const tab = await getActiveTab()
+
+        await setPopup('menu.html')
+        await saveRanking(tab.id, data as [string, number][])
+
+        return
+    }
+
+    if (title = 'translations') {
+
+        const tab = await getActiveTab()
+
+        await setPopup('menu.html')
+        await saveTranslations(tab.id, data as [string, number][])
+    }
+}
+
+
+
+import { sendToTab } from "./components/browser"
+
+async function sendToActiveTab(message: Message) {
+
+    const { id } = await getActiveTab()
+
+    return sendToTab(id, message)
+}
 
 
 

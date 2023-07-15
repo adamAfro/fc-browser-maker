@@ -1,18 +1,5 @@
 declare const browser: any
 
-export async function load(key) {
-
-    return (await browser.storage.local.get(key))[key]
-}
-
-export async function save(key, data) {
-
-    return browser.storage.local.set({ [key]: data})
-}
-
-
-
-
 
 
 export type Tab = { id: number }
@@ -27,6 +14,13 @@ export function setWidgetAction(callback: (Tab) => void) {
 export function setPopup(url: string) {
     
     browser.browserAction.setPopup({ popup: url })
+}
+
+export async function getPopup() {
+    
+    const { id } = await getActiveTab()
+
+    return browser.browserAction.getPopup({ tabId: id })
 }
 
 export function openPopup(url: string = '') {
@@ -44,16 +38,24 @@ export function removePopup() {
 
 
 
-export async function sendToBackground(message) {
+
+export type Message = {
+
+    command: string
+    title?: string
+    data?: any
+    pass?: boolean
+}
+
+export async function sendToBackground(message: Message) {
 
     return browser.runtime.sendMessage(message)
 }
 
-export async function sendToActiveTab(message) {
+export async function getActiveTab() {
 
-    const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
-
-    return browser.tabs.sendMessage(tab.id, message)
+    return (await browser.tabs.query({ active: true, currentWindow: true }))[0] as 
+        { id: number }
 }
 
 export async function sendToTab(id: number, message) {
@@ -66,4 +68,11 @@ export async function sendToTab(id: number, message) {
 export async function receive(callback: (message, sender, sendResponse) => void) {
 
     browser.runtime.onMessage.addListener(callback)
+}
+
+
+type TabListener = ({ previousTabId, tabId, windowId }) => void
+export async function reactToTabs(listener: TabListener) {
+
+    browser.tabs.onActivated.addListener(listener)
 }

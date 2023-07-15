@@ -1,14 +1,16 @@
 import makeQRCode from "./qrcode"
-import { load } from "../browser"
+import { loadSetting } from "../storage"
 
 /** Make animation of scannable SVG immages of data */
-export function AnimateArrayData(data: any[]) {
+export function AnimateArrayData(data: any[], dim: number) {
 
     const chunks = chunkCSVArray(data)
     const matrices = [] as SVGElement[]
     for (const chunk of chunks) {
 
-        const matrix = makeQRCode(JSON.stringify(chunk))
+        const matrix = makeQRCode({
+            msg: JSON.stringify(chunk), dim
+        })
 
         matrix.style.display = "none"
         
@@ -38,7 +40,7 @@ function setAnimationConrollers() {
     fpsInput.min = "100"
     fpsInput.max = "1000"
 
-    load('qrfps')
+    loadSetting('qrfps')
         .then(value => { if (value) fpsInput.value = value })
 
     return { fpsInput }
