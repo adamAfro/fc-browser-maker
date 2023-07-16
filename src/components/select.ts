@@ -32,8 +32,11 @@ function hover(event: Event): void {
 
     unhover()
 
-    const element = event.target as Element
-    if (canBeAnalised(element))
+    let element = event.target as Element
+    while(!canBeAnalised(element) && element.parentElement)
+        element = element.parentElement
+
+    if (element && canBeAnalised(element))
         element.classList.add(classNameHover)
 }
 
@@ -41,7 +44,10 @@ function hover(event: Event): void {
 
 export function select(element: Node | Element) {
 
-    if (!canBeAnalised(element))
+    while(!canBeAnalised(element) && element.parentElement)
+        element = element.parentElement
+
+    if (!element || !canBeAnalised(element))
         return null
 
     const ranking = analiseContent(element)

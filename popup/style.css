@@ -1,0 +1,43 @@
+body {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.ranking {
+
+    display: block;
+    background-color: #ffffffb2;
+    width: 100vw;
+}
+
+.ranking tbody {
+
+    display: block;
+    columns: 100vw 32em;
+    overflow-x: auto;
+}
+
+.ranking tr { display: inline; }
+
+.ranking td { display: inline; }
+
+.ranking .word {
+    
+    background-color: white;
+    cursor: pointer;
+
+    display:inline-block;
+    border:solid thin;
+    border-radius:.25em;
+    margin:.1em .5em;
+    padding:.2em;
+}
+
+.ranking .translation {}
+
+.qr {
+    width: 256px;
+    height: 256px;
+}
+
+.qr input { display: block;}

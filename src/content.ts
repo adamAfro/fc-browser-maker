@@ -1,24 +1,47 @@
+import { receive, sendToBackground } from "./components/browser"
+
+import { prepare as prepareHighlight } 
+    from "./components/highlight"
+
+import { highlight, unhighlight } 
+    from "./components/highlight"
+
+import { select, toogle as setSelectingMode } 
+    from "./components/select"
+
+import { mark } from "./components/keys"
+
 import CSS from "./components/styles"
+
+
 
 const styleTag = `<style>${CSS}</style>`
 document.head.insertAdjacentHTML("beforeend", styleTag)
 
 
 
-import { receive } from "./components/browser"
-
-receive(message => {
+receive((message, _, sendResponse) => {
 
     if (message.command == "select") 
-        handleSelecting()
+        return handleSelecting()
 
     if (message.command == "highlight")
-        handleHighlight(message.data) 
+        return handleHighlight(message.data)
+
+    if (message.command == 'check') {
+
+        if (message.title == 'selection') {
+
+            sendResponse(checkSelection())
+            
+            return true
+        }
+    }
+        
 })
 
 
 
-import { toogle as setSelectingMode } from "./components/select"
 
 function handleSelecting() {
 
@@ -31,9 +54,6 @@ function handleSelecting() {
 
 
 
-import { sendToBackground } from "./components/browser"
-import { select } from "./components/select"
-
 let container: Element | null = null
 function handleSelection(event: Event) {
 
@@ -43,6 +63,7 @@ function handleSelection(event: Event) {
     setSelectingMode(false)
 
     prepareHighlight(container, ranking)
+    markSelecion(container as HTMLElement)
     
     return sendToBackground({ 
         command: 'take',
@@ -51,8 +72,22 @@ function handleSelection(event: Event) {
     })
 }
 
-import { prepare as prepareHighlight } from "./components/highlight"
-import { highlight, unhighlight } from "./components/highlight"
+
+
+function markSelecion(container: HTMLElement) {
+
+    container.dataset[mark] = 'true'
+}
+
+function checkSelection() {
+
+    if (document.querySelector(`[data-${mark}]`))
+        return true
+
+    return false
+}
+
+
 
 function handleHighlight(word: string) {
 

@@ -71,8 +71,14 @@ export async function receive(callback: (message, sender, sendResponse) => void)
 }
 
 
-type TabListener = ({ previousTabId, tabId, windowId }) => void
-export async function reactToTabs(listener: TabListener) {
+type TabsListener = ({ previousTabId, tabId, windowId }) => void
+export async function reactToTabs(listener: TabsListener) {
 
     browser.tabs.onActivated.addListener(listener)
+}
+
+type TabListener = (tabId, changeInfo, tab) => void
+export async function reactToTab(listener: TabListener) {
+
+    browser.tabs.onUpdated.addListener(listener)
 }

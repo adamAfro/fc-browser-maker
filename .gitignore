@@ -1,8 +1,13 @@
 /bundle
 /icons
+
 /content.js
 /background.js
-/menu.js
-/content.deepl.com.js
+
+/popup/menu.js
+/popup/translations.js
+
+/pages/content.deepl.com.js
+
 /*.map
 /node_modules

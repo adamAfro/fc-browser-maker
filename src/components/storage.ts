@@ -25,6 +25,11 @@ async function save(key, data) {
     return browser.storage.local.set({ [key]: data})
 }
 
+async function remove(key) {
+
+    return browser.storage.local.remove(key)
+}
+
 
 
 
@@ -46,6 +51,11 @@ export function saveRanking(tabId: number, data: [string, number][]) {
     return save('ranking' + tabId, data)
 }
 
+export function resetRanking(tabId: number) {
+
+    return remove('ranking' + tabId)
+}
+
 
 
 export function loadTranslations(tabId: number) {
@@ -64,6 +74,23 @@ export function saveTranslations(tabId: number, data: [string, number][]) {
     return save('translations' + tabId, data)
 }
 
+export function resetTranslations(tabId: number) {
+
+    return remove('translations' + tabId)
+}
+
+export async function resetData() {
+
+    const keys = await browser.storage.local
+        .get(null, (items) => Object.keys(items))
+    if ( !keys)
+        return
+
+    const keysToRemove = keys
+        .filter(key => key.startsWith('ranking') || key.startsWith('translations'))
+
+    return browser.storage.local.remove(keysToRemove)
+}
 
 
 export function loadSetting(name: 'qrfps') {
