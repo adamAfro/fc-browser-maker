@@ -20,33 +20,10 @@ export function AnimateArrayData(data: any[], dim: number) {
         matrices.push(matrix)
     }
 
-    const container = document.createElement('div')
-    container.append(...matrices)
-
-    const { fpsInput } = setAnimationConrollers()
-    container.append(fpsInput)
-
-    startMatricesAnimation(matrices, fpsInput)
-
-    return container
+    return matrices
 }
 
-function setAnimationConrollers() {
-
-    const fpsInput = document.createElement('input')
-    
-    fpsInput.type = "range"
-    fpsInput.value = "500"
-    fpsInput.min = "100"
-    fpsInput.max = "1000"
-
-    loadSetting('qrfps')
-        .then(value => { if (value) fpsInput.value = value })
-
-    return { fpsInput }
-}
-
-function startMatricesAnimation(matrices: SVGElement[], fpsInput) {
+export function startMatricesAnimation(matrices: SVGElement[], fpsInput) {
 
     matrices[0].style.display = ""
 

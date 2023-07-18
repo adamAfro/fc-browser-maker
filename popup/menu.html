@@ -8,18 +8,24 @@
     <body>
         
         <main>
-            <h1>Wordsum</h1>
             <ul>
                 <li>
-                    <button data-command="goto" data-url="https://www.deepl.com/translator">
-                        🔤 translate
+                    <button class="s" data-command="reset">
+                        delete
                     </button>
                 </li>
-                <li>
-                    <button data-command="reset">
-                        ❌ reset
+                <li style="display:inline-flex;gap:.25em">
+                    <button class="s" data-command="goto" data-url="https://www.deepl.com/translator">
+                        translate
                     </button>
+                    <code style="opacity:.5">
+                        <a target="_blank"
+                            href="https://deepl.com/translator">deepl.com/<br/>translator</a>/<input 
+                            maxlength="3" type="text" value="" placeholder="auto">/<input 
+                            maxlength="3" type="text" value="" placeholder="auto">
+                    </code>
                 </li>
+            </ul>
         </main>
         <script src="menu.js"></script>
     </body>

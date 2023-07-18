@@ -21,27 +21,43 @@ document.querySelector('button[data-command="reset"]')
 
 async function updateTranslateButton() {
 
+    const translateBtn = document
+        .querySelector(`button[data-command="goto"]`) as HTMLElement
+
     const tab = await getActiveTab()
     const ranking = await loadRanking(tab.id)
-    const languageHash = '//'
     const wordTrack = ranking.
         map(([word]) => word).join('%0A')
 
-    const translateButton = document
-        .querySelector(`button[data-command="goto"]`) as HTMLElement
-
-    translateButton.dataset.url += '#' + languageHash + wordTrack
-    translateButton.addEventListener('click', requestTranslation)
+    translateBtn.dataset.wordTrack = wordTrack
+    translateBtn.addEventListener('click', requestTranslation)
 }
 
 
 
-function requestTranslation(event: Event) {
+/**
+ * @example
+ * document.insertAdjacentHTML('beforeend', html`
+ *      <div>
+ *          <button data-command="goto" ...></button>
+ *          <input/>
+ *          <input/>
+ *      </div>`)
+ * updateTranslateButton()
+ */
+async function requestTranslation(event: Event) {
 
-    const url = (event.target as HTMLElement).dataset.url
+    const translateBtn = event.target as HTMLButtonElement
+
+    const locales = Array.from(translateBtn.parentElement.querySelectorAll('input'))
+    const languageHash = (locales[0]?.value || '') + '/' + (locales[1]?.value || '') + '/'
+
+    let url =
+        translateBtn.dataset.url + '#' + 
+        languageHash + 
+        translateBtn.dataset.wordTrack
 
     openPopup(url)
-
     setPopup4Later('popup/menu.html')
 }
 

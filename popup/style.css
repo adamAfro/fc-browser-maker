@@ -3,6 +3,10 @@ body {
     flex-wrap: nowrap;
 }
 
+main {
+    padding: .25em 1em;
+}
+
 .ranking {
 
     display: block;
@@ -13,7 +17,8 @@ body {
 .ranking tbody {
 
     display: block;
-    columns: 100vw 32em;
+    columns: 100vw auto;
+    height: 32em;
     overflow-x: auto;
 }
 
@@ -38,6 +43,51 @@ body {
 .qr {
     width: 256px;
     height: 256px;
+    border: solid thin;
 }
 
 .qr input { display: block;}
+
+
+
+/* https://fonts.google.com/icons?selected=Material+Symbols+Outlined:close:FILL@0;wght@500;GRAD@0;opsz@48 */
+@font-face {
+    
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 100 700;
+    src: url(../assets/symbols.material.woff2) format('woff2');
+
+} .symbol, .s {
+
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+
+}
+
+
+
+input[maxlength="3"] {
+    width: 1.5em;
+}
+
+
+ul {
+    margin: 1em 0;
+    padding: 0;
+}
+
+li {
+    display: inline-block;
+}

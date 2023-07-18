@@ -8,16 +8,36 @@
     <body>
         
         <main>
-            <h1>Wordsum</h1>
             <ul>
-                <li><button data-command="copy">📝 copy</button></li>
                 <li>
-                    <button data-command="reset">
-                        ❌ reset
+                    <button class="s" data-command="cancel">
+                        backspace
                     </button>
                 </li>
+                <li>
+                    <button class="s" data-command="reset">
+                        delete
+                    </button>
+                </li>
+                <li>
+                    <button class="s" data-command="copy">
+                        content_copy
+                    </button>
+                </li>
+                <li>
+                    <button disabled class="s">photo_camera</button>
+                </li>
             </ul>
-            <div class="qr"></div>
+            
+            <label style="display:block;margin-left:1em">
+                <div class="qr"></div>
+                <p style="text-align:center;">
+                    <span class="s">speed</span>
+                    <input style="direction: rtl"
+                        type="range" min="100" max="2200" value="500">
+                </p>
+            </label>
+            
         </main>
         <script src="translations.js"></script>
     </body>

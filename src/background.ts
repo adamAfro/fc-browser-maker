@@ -1,4 +1,4 @@
-import { reactToTabs, setWidgetAction, getActiveTab, reactToTab } 
+import { reactToTabs, setWidgetAction, getActiveTab, reactToTab, openPopup } 
     from "./components/browser"
 
 import { sendToTab, receive, Message }
@@ -21,7 +21,7 @@ setWidgetAction(tab => sendToActiveTab({ command: 'select' }))
 
 reactToTabs(async ({ tabId }) => {
 
-    const hasSelection = await sendToActiveTab({ 
+    const hasSelection = await sendToActiveTab({
         command: 'check', title: 'selection'
     })
 
@@ -67,6 +67,13 @@ receive(async (message: Message) => {
         
         return reset(tab.id)
     }
+    
+    if (message.command == 'cancel') {
+
+        const tab = await getActiveTab()
+        
+        return cancel(tab.id)
+    }
         
 
     return console.debug(message)
@@ -110,6 +117,15 @@ function reset(tabId) {
     resetRanking(tabId)
     resetTranslations(tabId)
     removePopup()
+    sendToActiveTab({ command: 'reset' })
+}
+
+
+
+function cancel(tabId) {
+
+    resetTranslations(tabId)
+    setPopup('popup/menu.html')
 }
 
 

@@ -11,3 +11,7 @@
 [highlightingAttr] {
     transition: background-color 0.5s;
 }
+
+[markAttr] {
+    outline: solid red;
+}

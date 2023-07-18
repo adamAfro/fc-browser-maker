@@ -1,14 +1,15 @@
-import { getActiveTab, sendToBackground } 
+import { getActiveTab, sendToBackground, openPopup } 
     from "../components/browser"
 
-import { AnimateArrayData } from "../components/scan"
+import { AnimateArrayData, startMatricesAnimation } 
+    from "../components/scan"
 
 import { loadRanking } from "../components/storage"
 
 import { hasTranslations, loadTranslations } 
     from "../components/storage"
 
-import { saveSetting } from "../components/storage"
+import { loadSetting, saveSetting } from "../components/storage"
 
 import { printTable, classes, attrs, addTranslations } 
     from "../components/display"
@@ -24,6 +25,14 @@ document.querySelector('button[data-command="reset"]')
     .addEventListener('click', async () => {
         
         await sendToBackground({ command: 'reset' })
+        
+        window.close()
+    })
+
+document.querySelector('button[data-command="cancel"]')
+    .addEventListener('click', async () => {
+        
+        await sendToBackground({ command: 'cancel' })
         
         window.close()
     })
@@ -67,12 +76,18 @@ async function showQRCodes() {
         return false
 
     const container = document.querySelector('.qr') as HTMLElement
-    const scanAnimation = AnimateArrayData(translations, container.offsetWidth)
-    const fpsInput = scanAnimation.querySelector('input[type="range"]') as HTMLInputElement
+    const matrices = AnimateArrayData(translations, container.offsetWidth)
+
+    container.append(...matrices)
+
+    const fpsInput = container.parentElement
+        .querySelector('input[type="range"]') as HTMLInputElement
+    loadSetting('qrfps')
+        .then(value => { if (value) fpsInput.value = value })
     
     fpsInput.addEventListener('input', saveFpsValue)
 
-    container.append(scanAnimation)
+    startMatricesAnimation(matrices, fpsInput)
 
     return true
 }

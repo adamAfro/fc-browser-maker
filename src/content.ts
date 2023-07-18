@@ -1,3 +1,4 @@
+import { rank } from "./components/analise"
 import { receive, sendToBackground } from "./components/browser"
 
 import { prepare as prepareHighlight } 
@@ -6,10 +7,8 @@ import { prepare as prepareHighlight }
 import { highlight, unhighlight } 
     from "./components/highlight"
 
-import { select, toogle as setSelectingMode } 
+import { toogle as setSelectingMode, select, Selection } 
     from "./components/select"
-
-import { mark } from "./components/keys"
 
 import CSS from "./components/styles"
 
@@ -22,48 +21,45 @@ document.head.insertAdjacentHTML("beforeend", styleTag)
 
 receive((message, _, sendResponse) => {
 
-    if (message.command == "select") 
-        return handleSelecting()
+    if (message.command == "select") {
+
+        setSelectingMode(true)
+        document.body
+            .addEventListener("click", handleSelecting, { once: true })
+    
+        return
+    }
 
     if (message.command == "highlight")
         return handleHighlight(message.data)
+
+    if (message.command == 'reset') {
+        Selection.unmark()
+        unhighlight(document.body)
+    }
+        
 
     if (message.command == 'check') {
 
         if (message.title == 'selection') {
 
-            sendResponse(checkSelection())
+            sendResponse(Selection.check())
             
             return true
         }
     }
-        
 })
 
 
 
+function handleSelecting(event: Event) {
 
-function handleSelecting() {
+    const element = event.target as Element
+    const ranking = select(element)
+    if ( !ranking)
+        return
 
-    setSelectingMode(true)
-    document.body
-        .addEventListener("click", handleSelection, { once: true })
-    
-    return true // to keep the bg-script waiting for response
-}
-
-
-
-let container: Element | null = null
-function handleSelection(event: Event) {
-
-    container = event.target as Element
-
-    const ranking = select(container)
-    setSelectingMode(false)
-
-    prepareHighlight(container, ranking)
-    markSelecion(container as HTMLElement)
+    prepareHighlight(element, ranking)
     
     return sendToBackground({ 
         command: 'take',
@@ -74,23 +70,12 @@ function handleSelection(event: Event) {
 
 
 
-function markSelecion(container: HTMLElement) {
-
-    container.dataset[mark] = 'true'
-}
-
-function checkSelection() {
-
-    if (document.querySelector(`[data-${mark}]`))
-        return true
-
-    return false
-}
-
-
-
 function handleHighlight(word: string) {
 
+    const container = Selection.get()
+    if ( !container)
+        return
+    
     unhighlight(container)
     highlight(container, word)
 }
