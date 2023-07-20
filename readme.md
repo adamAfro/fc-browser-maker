@@ -14,6 +14,8 @@ translations
 ## Howto?
 
 - install
+    - :red_circle: since it is not signed yet, only about:debugging works now; 
+        doesn't work properly event with dev-ed for some reason
 - click extension button
 - select a text on a website
 - click extension button for a popup (:fox_face: firefox seems to need it for now [user gesture])
@@ -27,6 +29,8 @@ translations
     - QR code slideshow for scanning (see [FCQR](https://github.com/adamAfro/fcqr))
 
 ### Supported Websites 
+
+Network usage of scrapping is dependent of form data is given.
 
 #### Live-Scrap
 
@@ -44,10 +48,13 @@ Planned:
 
 - chat.open.ai
 
+Live scarp tends to be more compact and as such may require
+less network usage.
+
 #### Background scrap
 
 Some websites can be scrapped with normal `fetch` API, and that is
-prefered for simplicity, speed and network usage
+prefered for simplicity and speed
 
 Planned:
 
