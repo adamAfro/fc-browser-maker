@@ -13,7 +13,7 @@ translations
 
 ## Howto?
 
-- install ... :building_construction:
+- install
 - click extension button
 - select a text on a website
 - click extension button for a popup (:fox_face: firefox seems to need it for now [user gesture])
