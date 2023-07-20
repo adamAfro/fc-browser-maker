@@ -11,3 +11,5 @@
 
 /*.map
 /node_modules
+
+/dist.xpi
