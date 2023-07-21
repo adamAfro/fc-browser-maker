@@ -28,7 +28,7 @@ export function canBeAnalised(element: Node | Element) {
 export function analiseContent(element: Node | Element) {
 
     const words = element.textContent
-        .replaceAll(/[.,\/#!$%\^&\*;:{}=\-_`~()\[\]\d?,]/g, ' ')
+        .replaceAll(/[.,"„”\/#!$%\^&\*;:{}=\-–_`~()\[\]\d?,]/g, ' ')
         .split(/\s+/g).filter(w => w.length > 0)
     const ranking = rank(words) as [string, number][]
     

@@ -1,20 +1,27 @@
 # FC browser maker :black_joker:
 
-Browser extension for automated flashcards making :gear:
+Browser extension for automated flashcards making :gear: - it gathers words from a text, counts them and seeks for
+translations. Then QR code [can be scanned](https://github.com/adamAfro/fcqr)
 
-It gathers word from a text, counts them and seeks for
-translations
+## TODO
 
-## Browsers
-
-- [ ] firefox :mechanic:
-- [ ] chrome :zzz:
-- [ ] opera :zzz:
+- [x] :iphone: making scannable QR codes with flashcards data
+- [x] :mouse_trap: multiple selections among tabs
+- [ ] :mouse_trap: adding to made selection on a single tab 
+- [ ] :bookmark_tabs: sending (also through QR) selection itself as reference
+- [ ] :paintbrush: UI design
+- [ ] :people_hugging: general purpose functionalities:
+    - [x] :mouse_trap: converting selection to flashcards with translations (deepl.com)
+    - [ ] :robot: converting selection to chat GPT definitions flashcards (chat.openai.com)
+- [ ] :spaghetti: italian language functionalities:  
+  - [ ] :notebook_with_decorative_cover: converting selection to flashcards with definitions (treccani.it/enciclopedia)
+- [x] :fox_face: add to firefox
+- [ ] :ringed_planet: add to chrome
+- [ ] :globe_with_meridians: add to other browsers
 
 ## Howto?
 
-- install in firefox-dev-edition until it is signed by mozilla at 
-    [addons page](https://addons.mozilla.org/pl/firefox/addon/flashcards-maker/)
+- install from [addons page](https://addons.mozilla.org/pl/firefox/addon/flashcards-maker/)
 - :mouse:x2 click extension button and select a text on a website
 - :mouse:x3 click extension button for a popup :fox_face: 
     select action and click extension button for a popup :fox_face: either
@@ -28,38 +35,6 @@ translations
 :fox_face: - firefox lets opening popup only from background script
     and so a lot of clicking (:mouse:x6 could be 3) is required for now
 
-### Supported Websites 
-
-Network usage of scrapping is dependent of form data is given.
-
-#### Live-Scrap
-
-Some websites work with JS, so casual scrapping won't do much.
-Headless browser seems not adequate when you have normal browser
-and not a terabyte-need of data, so a popup it is
-
-Also it looks cooler
-
-Supported:
-
-- deepl.com/translate
-
-Planned:
-
-- chat.open.ai
-
-Live scarp tends to be more compact and as such may require
-less network usage.
-
-#### Background scrap
-
-Some websites can be scrapped with normal `fetch` API, and that is
-prefered for simplicity and speed
-
-Planned:
-
-- treccani.it/enciclopedia
-
 ## Why?
 
 :speech_balloon: There's a plenty of language flashcards up there, in the internet.
@@ -71,6 +46,26 @@ I would like to read something in a language I study, but I don't know all the w
 ---
 
 [1] I don't know really
+
+## Scrapping Websites
+
+Network usage of scrapping is dependent of form data is given.
+
+### Live-Scrap
+
+Some websites work with JS, so casual scrapping won't do much.
+Headless browser seems not adequate when you have normal browser
+and not a terabyte-need of data, so a popup it is
+
+Also it looks cooler
+
+Live scarp tends to be more compact and as such may require
+less network usage.
+
+### Background scrap
+
+Some websites can be scrapped with normal `fetch` API, and that is
+prefered for simplicity and speed
 
 ## Dev and Deps
 
