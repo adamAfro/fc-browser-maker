@@ -1,4 +1,3 @@
-import { rank } from "./components/analise"
 import { receive, sendToBackground } from "./components/browser"
 
 import { prepare as prepareHighlight } 

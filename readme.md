@@ -13,20 +13,20 @@ translations
 
 ## Howto?
 
-- install
-    - :red_circle: since it is not signed yet, only about:debugging works now; 
-        doesn't work properly event with dev-ed for some reason
-- click extension button
-- select a text on a website
-- click extension button for a popup (:fox_face: firefox seems to need it for now [user gesture])
-- select action, either:
-    - a popup will open up and a 3rd party website will be rendered and live-scrapped in it
+- install in firefox-dev-edition until it is signed by mozilla at 
+    [addons page](https://addons.mozilla.org/pl/firefox/addon/flashcards-maker/)
+- :mouse:x2 click extension button and select a text on a website
+- :mouse:x3 click extension button for a popup :fox_face: 
+    select action and click extension button for a popup :fox_face: either
+    - a popup will live-scrap a 3rd party website
     - some background calls for scrapping will be done, with popup having loading screen
-- click extension button for a popup (:fox_face:)
-- view:
+- :mouse: click extension button for a popup :fox_face: and view:
     - ranking of the words with their translations
     - copy button for CSV copy (for quizlet for eg.)
     - QR code slideshow for scanning (see [FCQR](https://github.com/adamAfro/fcqr))
+
+:fox_face: - firefox lets opening popup only from background script
+    and so a lot of clicking (:mouse:x6 could be 3) is required for now
 
 ### Supported Websites 
 
@@ -75,8 +75,10 @@ I would like to read something in a language I study, but I don't know all the w
 ## Dev and Deps
 
 - developed and tested with firefox :fox_face:
-- bundling: [esbuild](https://esbuild.github.io/)&[deno](https://deno.land/):\
-    `deno run -A --watch=./src bundle.js`
+- bundling requirements: [deno](https://deno.land/)&[esbuild](https://esbuild.github.io/)
+    - install deno and optionally cache `esbuild` with `deno cache https://deno.land/x/esbuild@v0.18.11/mod.js`
+    - bundle with `deno run bundle.js` accepting prompts and make `xpi` file with `./zip.sh`
+    - while developing, use: `deno run -A --watch=./src bundle.js`
 - datalog/[datamatrix-svg](https://github.com/datalog/datamatrix-svg) under MIT
 
 ## License

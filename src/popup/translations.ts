@@ -1,4 +1,4 @@
-import { getActiveTab, sendToBackground, openPopup } 
+import { getActiveTab, sendToBackground } 
     from "../components/browser"
 
 import { AnimateArrayData, startMatricesAnimation } 

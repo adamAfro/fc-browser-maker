@@ -2,9 +2,6 @@ import { getActiveTab, sendToBackground } from "../components/browser"
 
 import { loadRanking } from "../components/storage"
 
-import { openPopup, setPopup as setPopup4Later } 
-    from "../components/browser"
-
 
 
 updateTranslateButton()
@@ -57,8 +54,9 @@ async function requestTranslation(event: Event) {
         languageHash + 
         translateBtn.dataset.wordTrack
 
-    openPopup(url)
-    setPopup4Later('popup/menu.html')
+    sendToBackground({ command: 'popup', data: url })
+
+    window.close()
 }
 
 

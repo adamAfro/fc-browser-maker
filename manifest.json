@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "fc-browser-maker",
+    "name": "Flashcards maker",
     "version": "1.0",
-    "description": "Counts words on a webpage and makes flashcards from them using scrapping of 3rd party website",
+    "description": "Counts words on a webpage and makes flashcards from them using scrapping of 3rd party websites",
     "permissions": ["activeTab", "storage"],
     "icons": {
         "48": "assets/icons/cloud-48.png"

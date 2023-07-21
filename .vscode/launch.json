@@ -5,6 +5,7 @@
             "name": "Firefox",
             "type": "firefox",
             "request": "launch",
+            "firefoxExecutable": "/home/adam/.firefox-dev/firefox",
             "addonPath": "${workspaceFolder}",
             "reAttach": true,
             "url": "${workspaceFolder}/debug.html",
