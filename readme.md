@@ -7,7 +7,8 @@ translations. Then QR code [can be scanned](https://github.com/adamAfro/fcqr)
 
 - [x] :iphone: making scannable QR codes with flashcards data
 - [x] :mouse_trap: multiple selections among tabs
-- [ ] :mouse_trap: adding to made selection on a single tab 
+- [ ] :mouse_trap: make selections with native cursor selection
+- [x] highlight words after clicking on them in popup*
 - [ ] :bookmark_tabs: sending (also through QR) selection itself as reference
 - [ ] :paintbrush: UI design
 - [ ] :people_hugging: general purpose functionalities:
@@ -18,6 +19,10 @@ translations. Then QR code [can be scanned](https://github.com/adamAfro/fcqr)
 - [x] :fox_face: add to firefox
 - [ ] :ringed_planet: add to chrome
 - [ ] :globe_with_meridians: add to other browsers
+
+\*replaceing highlighting with 
+[find API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/find/find) 
+could remove need for read-all permissions for all pages, given that selecting is done properly
 
 ## Howto?
 
