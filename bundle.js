@@ -2,7 +2,7 @@ import { build, stop } from 'https://deno.land/x/esbuild@v0.18.11/mod.js'
 
 const scripts = [
     
-    'content', 'background',
+    'background',
     'popup/menu', 'popup/translations'
 
 ], pageScripts = ['pages/content.deepl.com']
