@@ -14,3 +14,5 @@
 
 /dist.xpi
 /source.zip
+
+*.js.map

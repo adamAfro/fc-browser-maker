@@ -11,6 +11,7 @@ for (const name of [scripts, pageScripts].flat()) await build({
   
     entryPoints: [`./src/${name}.ts`],  
     outfile: `./${name}.js`,
+    sourcemap: true,
 
     bundle: true, loader: { '.css': 'text' },
 
