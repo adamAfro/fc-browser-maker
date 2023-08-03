@@ -1,4 +1,5 @@
-import { getActiveTab, sendToBackground } from "../components/browser"
+import { sendToBackground, Command } 
+    from "../components/browser"
 
 import { loadRanking } from "../components/storage"
 
@@ -9,7 +10,7 @@ updateTranslateButton()
 document.querySelector('button[data-command="reset"]')
     .addEventListener('click', async () => {
         
-        await sendToBackground({ command: 'reset' })
+        await sendToBackground({ command: Command.Reset })
         
         window.close()
     })
@@ -21,8 +22,7 @@ async function updateTranslateButton() {
     const translateBtn = document
         .querySelector(`button[data-command="goto"]`) as HTMLElement
 
-    const tab = await getActiveTab()
-    const ranking = await loadRanking(tab.id)
+    const ranking = await loadRanking()
     const wordTrack = ranking.
         map(([word]) => word).join('%0A')
 
@@ -45,7 +45,6 @@ async function updateTranslateButton() {
 async function requestTranslation(event: Event) {
 
     const translateBtn = event.target as HTMLButtonElement
-
     const locales = Array.from(translateBtn.parentElement.querySelectorAll('input'))
     const languageHash = (locales[0]?.value || '') + '/' + (locales[1]?.value || '') + '/'
 
@@ -54,7 +53,7 @@ async function requestTranslation(event: Event) {
         languageHash + 
         translateBtn.dataset.wordTrack
 
-    sendToBackground({ command: 'popup', data: url })
+    sendToBackground({ command: Command.Popup, data: url })
 
     window.close()
 }

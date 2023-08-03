@@ -3,7 +3,7 @@ const outputContainer = document
 
 
 
-import { sendToBackground } from "../components/browser"
+import { sendToBackground, Command } from "../components/browser"
 
 const changeCheck = setInterval(async () => {
     
@@ -14,14 +14,9 @@ const changeCheck = setInterval(async () => {
     
     new Promise(resolve => setTimeout(resolve, 300))
 
-    await sendToBackground({ 
-        command: 'take', title: 'translations', 
-        data: await getContent() 
-    })
-
-    await sendToBackground({ 
-        command: 'popup', 
-        data: 'popup/translations.html' 
+    await sendToBackground({
+        command: Command.Take, title: 'translations', 
+        data: await getContent()
     })
 
     window.close()

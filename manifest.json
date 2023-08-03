@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "name": "Flashcards maker",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Counts words on a webpage and makes flashcards from them using scrapping of 3rd party websites",
-    "permissions": ["activeTab", "storage"],
+    "permissions": ["activeTab", "storage", "contextMenus"],
     "icons": {
         "48": "assets/icons/cloud-48.png"
     },
@@ -21,7 +21,6 @@
     },
 
     "content_scripts": [
-        { "matches": ["<all_urls>"], "js": [ "content.js" ] },
         { "matches": ["*://www.deepl.com/*"], "js": [ "pages/content.deepl.com.js" ] }
     ],
 

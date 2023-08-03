@@ -3,22 +3,17 @@
 Browser extension for automated flashcards making :gear: - it gathers words from a text, counts them and seeks for
 translations. Then QR code [can be scanned](https://github.com/adamAfro/fcqr)
 
-## TODO
+## Features and TODOs
 
-- [x] :iphone: making scannable QR codes with flashcards data
-- [x] :mouse_trap: multiple selections among tabs
-- [ ] :mouse_trap: make selections with native cursor selection
-- [x] highlight words after clicking on them in popup*
+- [x] :iphone: making scannable QR codes with CSV `term,definition` flashcards
+- [x] :mouse_trap: making selections with cursor
 - [ ] :bookmark_tabs: sending (also through QR) selection itself as reference
 - [ ] :paintbrush: UI design
 - [ ] :people_hugging: general purpose functionalities:
     - [x] :mouse_trap: converting selection to flashcards with translations (deepl.com)
     - [ ] :robot: converting selection to chat GPT definitions flashcards (chat.openai.com)
-- [ ] :spaghetti: italian language functionalities:  
-  - [ ] :notebook_with_decorative_cover: converting selection to flashcards with definitions (treccani.it/enciclopedia)
-- [x] :fox_face: add to firefox
-- [ ] :ringed_planet: add to chrome
-- [ ] :globe_with_meridians: add to other browsers
+- [x] :fox_face: firefox extension
+- [ ] :ringed_planet: chrome extension
 
 \*replaceing highlighting with 
 [find API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/find/find) 
@@ -26,19 +21,18 @@ could remove need for read-all permissions for all pages, given that selecting i
 
 ## Howto?
 
-- install from [addons page](https://addons.mozilla.org/pl/firefox/addon/flashcards-maker/)
-- :mouse:x2 click extension button and select a text on a website
-- :mouse:x3 click extension button for a popup :fox_face: 
-    select action and click extension button for a popup :fox_face: either
+0. install from [addons page](https://addons.mozilla.org/pl/firefox/addon/flashcards-maker/)
+1. select text, click right mouse button and select `Make flashcards` from context menu
+2. select option from popup
     - a popup will live-scrap a 3rd party website
     - some background calls for scrapping will be done, with popup having loading screen
-- :mouse: click extension button for a popup :fox_face: and view:
+3. view in popup, you can get back to it with extension button:
     - ranking of the words with their translations
     - copy button for CSV copy (for quizlet for eg.)
     - QR code slideshow for scanning (see [FCQR](https://github.com/adamAfro/fcqr))
 
-:fox_face: - firefox lets opening popup only from background script
-    and so a lot of clicking (:mouse:x6 could be 3) is required for now
+:warning: Scrapping 3rd party websites opens popups in new window and closes them immediately after scrap, see
+`src/menu.ts` and `src/pages/*`
 
 ## Why?
 
@@ -71,6 +65,8 @@ less network usage.
 
 Some websites can be scrapped with normal `fetch` API, and that is
 prefered for simplicity and speed
+
+- drawbacks - most of website's don't support wide CORS so proxies may be needed
 
 ## Dev and Deps
 

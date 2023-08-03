@@ -35,48 +35,48 @@ async function remove(key) {
 
 
 
-export function loadRanking(tabId: number) {
+export function loadRanking() {
 
-    return load('ranking' + tabId) as 
+    return load('ranking') as 
         Promise <[string, number][]> | Promise <undefined>
 }
 
-export function hasRanking(tabId: number) {
+export function hasRanking() {
 
-    return has('ranking' + tabId)
+    return has('ranking')
 }
 
-export function saveRanking(tabId: number, data: [string, number][]) {
+export function saveRanking(data: [string, number][]) {
 
-    return save('ranking' + tabId, data)
+    return save('ranking', data)
 }
 
-export function resetRanking(tabId: number) {
+export function resetRanking() {
 
-    return remove('ranking' + tabId)
+    return remove('ranking')
 }
 
 
 
-export function loadTranslations(tabId: number) {
+export function loadTranslations() {
 
-    return load('translations' + tabId) as 
+    return load('translations') as 
         Promise <[string, string][]> | Promise <undefined>
 }
 
-export function hasTranslations(tabId: number) {
+export function hasTranslations() {
 
-    return has('translations' + tabId)
+    return has('translations')
 }
 
-export function saveTranslations(tabId: number, data: [string, number][]) {
+export function saveTranslations(data: [string, number][]) {
  
-    return save('translations' + tabId, data)
+    return save('translations', data)
 }
 
-export function resetTranslations(tabId: number) {
+export function resetTranslations() {
 
-    return remove('translations' + tabId)
+    return remove('translations')
 }
 
 export async function resetData() {
@@ -93,12 +93,13 @@ export async function resetData() {
 }
 
 
-export function loadSetting(name: 'qrfps') {
+type SettingName = 'qrfps' | 'width' | 'height'
+export function loadSetting(name: SettingName) {
 
     return load(name)
 }
 
-export function saveSetting(name: 'qrfps', value = undefined) {
+export function saveSetting(name: SettingName, value = undefined) {
 
     return save(name, value)
 }

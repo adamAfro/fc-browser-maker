@@ -1,81 +1,75 @@
-import { reactToTabs, setWidgetAction, getActiveTab, reactToTab, openPopup } 
+import { Command, getActiveTab } 
+    from "./components/browser"
+
+import { setMenuAction }
     from "./components/browser"
 
 import { sendToTab, receive, Message }
     from "./components/browser"
 
-import { setPopup, removePopup } 
+import { setPopup, removePopup, openPopup, popupWindow } 
     from "./components/browser"
 
-import { saveRanking, hasRanking, resetRanking, resetTranslations } 
+import { saveRanking, resetRanking, resetTranslations } 
     from "./components/storage"
 
-import { saveTranslations, hasTranslations } 
+import { saveTranslations } 
     from "./components/storage"
+
 
 import { resetData } from "./components/storage"
 
+import analise from "./components/analise"
+
+
+import { configuration as config } from "./components/browser"
+
+
+
+const menuPrompt = config.language.toLocaleLowerCase() == 'pl' ?
+    'Twórz fiszki' : 'Make flashcards'
+
+
 
 resetData()
-setWidgetAction(tab => sendToActiveTab({ command: 'select' }))
 
-reactToTabs(async ({ tabId }) => {
+setMenuAction(menuPrompt, async (info) => {
 
-    const hasSelection = await sendToActiveTab({
-        command: 'check', title: 'selection'
-    })
+    if (!info.selectionText)
+        return
 
-    if (!hasSelection)
-        return removePopup()
+    const ranking = analise(info.selectionText)
 
-    if (hasTranslations(tabId))
-        return setPopup('popup/translations.html')
+    await openPopup('popup/menu.html')
+    await saveRanking(ranking)
 
-    if (hasRanking(tabId))   
-        return setPopup('popup/menu.html')
-
-    return removePopup()
 })
 
-reactToTab(async (tabId, changeInfo) => {
+receive(async (message: Message) => {
 
-    const hasLoaded = changeInfo.url || changeInfo.status === "complete"
-    if (hasLoaded)
-        reset(tabId)
-})
-
-
-
-receive(async (message: Message) => { 
-
-    if (message.pass) {
-
-        delete message.pass
-
-        return sendToActiveTab(message)
-    }
-
-    if (message.command == 'take')
+    if (message.command == Command.Take)
         return takeData(message.title, message.data)
 
-    if (message.command == 'popup')
-        return setPopup(message.data)
+    if (message.command == Command.Popup)
+        return popupWindow(message.data)
 
-    if (message.command == 'reset') {
+    if (message.command == Command.Reset) {
 
-        const tab = await getActiveTab()
-        
-        return reset(tab.id)
+        resetRanking()
+        resetTranslations()
+        removePopup()
+
+        return
     }
     
-    if (message.command == 'cancel') {
+    if (message.command == Command.Cancel) {
 
-        const tab = await getActiveTab()
-        
-        return cancel(tab.id)
+        resetTranslations()
+        setPopup('popup/menu.html')
+
+        return
     }
-        
-
+    
     return console.debug(message)
 })
 
@@ -83,21 +77,18 @@ receive(async (message: Message) => {
 async function takeData(title: string, data: any) {
 
     if (title == 'ranking') {
-        
-        const tab = await getActiveTab()
 
         await setPopup('popup/menu.html')
-        await saveRanking(tab.id, data as [string, number][])
+        await saveRanking(data as [string, number][])
 
         return
     }
 
     if (title = 'translations') {
 
-        const tab = await getActiveTab()
-
-        await setPopup('popup/menu.html')
-        await saveTranslations(tab.id, data as [string, number][])
+        await setPopup('popup/translations.html')
+        await saveTranslations(data as [string, number][])
+        await popupWindow('popup/translations.html')
     }
 }
 
@@ -109,25 +100,6 @@ async function sendToActiveTab(message: Message) {
 
     return sendToTab(id, message)
 }
-
-
-
-function reset(tabId) {
-
-    resetRanking(tabId)
-    resetTranslations(tabId)
-    removePopup()
-    sendToActiveTab({ command: 'reset' })
-}
-
-
-
-function cancel(tabId) {
-
-    resetTranslations(tabId)
-    setPopup('popup/menu.html')
-}
-
 
 
 export default null // ts workaround

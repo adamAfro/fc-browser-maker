@@ -1,4 +1,4 @@
-import { getActiveTab, sendToBackground } 
+import { sendToBackground, Command } 
     from "../components/browser"
 
 import { AnimateArrayData, startMatricesAnimation } 
@@ -24,7 +24,7 @@ showQRCodes()
 document.querySelector('button[data-command="reset"]')
     .addEventListener('click', async () => {
         
-        await sendToBackground({ command: 'reset' })
+        await sendToBackground({ command: Command.Reset })
         
         window.close()
     })
@@ -32,17 +32,22 @@ document.querySelector('button[data-command="reset"]')
 document.querySelector('button[data-command="cancel"]')
     .addEventListener('click', async () => {
         
-        await sendToBackground({ command: 'cancel' })
+        await sendToBackground({ command: Command.Cancel })
         
         window.close()
     })
 
 
+window.addEventListener("resize", async (event) => {
+
+    await saveSetting('width', window.innerWidth)
+    await saveSetting('height', window.innerHeight)
+})
+
 
 async function showCopyButton() {
 
-    const tab = await getActiveTab()
-    if (!(await hasTranslations(tab.id)))
+    if (!(await hasTranslations()))
         return false
 
     const copyButton = document
@@ -56,8 +61,7 @@ async function showCopyButton() {
 
 async function copy() {
 
-    const tab = await getActiveTab()
-    const translations = await loadTranslations(tab.id)
+    const translations = await loadTranslations()
     const separator = ','
     const clip = translations
         .map(([word, tr]) => word + separator + tr)
@@ -70,8 +74,7 @@ async function copy() {
 
 async function showQRCodes() {
 
-    const tab = await getActiveTab()
-    const translations = await loadTranslations(tab.id)
+    const translations = await loadTranslations()
     if  (!translations)
         return false
 
@@ -110,14 +113,12 @@ Object.assign(classes, {
 
 async function showRanking() {
 
-    const tab = await getActiveTab()
-    const ranking = await loadRanking(tab.id)
+    const ranking = await loadRanking()
     if ( !ranking)
         return    
 
     const container = document.createElement('div')
 
-    container.addEventListener('click', highlight)
     container.innerHTML = printTable(ranking)
     
     document.body.append(container)
@@ -127,35 +128,13 @@ async function showRanking() {
 
 async function showTranslations() {
 
-    const tab = await getActiveTab()
-    const translations = await loadTranslations(tab.id)
+    const translations = await loadTranslations()
     if ( !translations)
         return
     
     const container = document.querySelector('.ranking')
 
     addTranslations(container, translations)
-}
-
-
-
-async function highlight(event: Event) {
-        
-    const word = (event.target as HTMLElement)
-    if ( !word)
-        return
-
-    const tab = await getActiveTab()
-    const ranking = await loadRanking(tab.id)
-    if (!ranking.find(([w]) => w == word.textContent))
-        return
-
-    sendToBackground({
-        command: 'highlight', pass: true,
-        data: word.textContent
-    })
-
-    window.close()
 }
 
 

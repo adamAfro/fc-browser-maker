@@ -10,7 +10,7 @@ function count(array: any[]): Map<any, number> {
     return counts
 }
 
-export function rank(words: string[]): [any, number][] {
+function rank(words: string[]): [any, number][] {
 
     const counted = [...count(words).entries()]
         .sort(( [w1, n1], [w2, n2] ) => n2 - n1)
@@ -18,16 +18,9 @@ export function rank(words: string[]): [any, number][] {
     return counted
 }
 
+export default function(text: string) {
 
-export function canBeAnalised(element: Node | Element) {
-
-    return element.textContent.length > 256 &&
-        element instanceof Element
-}
-
-export function analiseContent(element: Node | Element) {
-
-    const words = element.textContent
+    const words = text
         .replaceAll(/[.,"„”\/#!$%\^&\*;:{}=\-–_`~()\[\]\d?,]/g, ' ')
         .split(/\s+/g).filter(w => w.length > 0)
     const ranking = rank(words) as [string, number][]

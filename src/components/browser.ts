@@ -1,3 +1,5 @@
+import { loadSetting } from "./storage"
+
 declare const browser: any
 
 
@@ -13,7 +15,7 @@ export function setWidgetAction(callback: (Tab) => void) {
 
 export function setPopup(url: string) {
     
-    browser.browserAction.setPopup({ popup: url })
+    return browser.browserAction.setPopup({ popup: url })
 }
 
 export async function getPopup() {
@@ -28,20 +30,36 @@ export function openPopup(url: string = '') {
     if (url)
         browser.browserAction.setPopup({ popup: url })
 
-    browser.browserAction.openPopup()
+    return browser.browserAction.openPopup()
 }
 
 export function removePopup() {
 
-    browser.browserAction.setPopup({ popup: '' })
+    return browser.browserAction.setPopup({ popup: '' })
+}
+
+/** @TODO save previous window size */
+export function popupWindow(url: string) {
+
+    return browser.windows.create({ url,
+        type: "popup", 
+        width: 512,
+        height: 512
+    })
 }
 
 
+export enum Command {
 
+    Take = 'take',
+    Popup = 'popup',
+    Reset = 'reset',
+    Cancel = 'cancel'
+}
 
 export type Message = {
 
-    command: string
+    command: Command
     title?: string
     data?: any
     pass?: boolean
@@ -81,4 +99,24 @@ type TabListener = (tabId, changeInfo, tab) => void
 export async function reactToTab(listener: TabListener) {
 
     browser.tabs.onUpdated.addListener(listener)
+}
+
+
+
+type Info = { selectionText: string }
+export async function setMenuAction(title: string, action: (info: Info, tab: Tab) => void, contexts: string[] = ['all']) {
+
+    await browser.contextMenus.create({
+        title, id: title.toLocaleLowerCase().replaceAll(' ', '-'),
+        contexts
+    }, () => void browser.runtime.lastError)
+
+    await browser.contextMenus.onClicked.addListener(action)
+}
+
+
+
+export const configuration = {
+
+    language: navigator.language,
 }
