@@ -3,6 +3,8 @@
 Browser extension for automated flashcards making :gear: - it gathers words from a text, counts them and seeks for
 translations. Then QR code [can be scanned](https://github.com/adamAfro/fcqr)
 
+No longer developed, I splited idea into 2: [Popup GPT](https://github.com/adamAfro/Popup-GPT) and [QR Selection](https://github.com/adamAfro/browser-qrselect)
+
 ## Features and TODOs
 
 - [x] :iphone: making scannable QR codes with CSV `term,definition` flashcards
@@ -33,18 +35,6 @@ could remove need for read-all permissions for all pages, given that selecting i
 
 :warning: Scrapping 3rd party websites opens popups in new window and closes them immediately after scrap, see
 `src/menu.ts` and `src/pages/*`
-
-## Why?
-
-:speech_balloon: There's a plenty of language flashcards up there, in the internet.
-The thing is - I don't care! I don't care about making 100th account for a service,
-paying for sets or tracking my *progress* with a ton of fillers and adds 
-('cause I am not paying), probably like most of people [1]. 2nd thing is that 
-I would like to read something in a language I study, but I don't know all the words, aye.
-
----
-
-[1] I don't know really
 
 ## Scrapping Websites
 
