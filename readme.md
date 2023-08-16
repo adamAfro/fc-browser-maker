@@ -1,9 +1,9 @@
-# FC browser maker :black_joker:
+# ~~FC browser maker~~ :black_joker:
 
 Browser extension for automated flashcards making :gear: - it gathers words from a text, counts them and seeks for
 translations. Then QR code [can be scanned](https://github.com/adamAfro/fcqr)
 
-No longer developed, I splited idea into 2: [Popup GPT](https://github.com/adamAfro/Popup-GPT) and [QR Selection](https://github.com/adamAfro/browser-qrselect)
+:warning: No longer developed, I splited the idea into 2: [Popup GPT](https://github.com/adamAfro/Popup-GPT) and [QR Selection](https://github.com/adamAfro/browser-qrselect)
 
 ## Features and TODOs
 
